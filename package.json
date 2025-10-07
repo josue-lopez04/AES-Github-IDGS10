@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build": "babel ./bun/www -d dist",
-    "test": "jest"
+    "build": "babel ./bun/www -d dist"
   },
   "dependencies": {
     "and": "^0.0.3",
@@ -21,7 +20,6 @@
   "devDependencies": {
     "@babel/cli": "^7.28.3",
     "@babel/core": "^7.28.4",
-    "@babel/preset-env": "^7.28.3",
-    "jest": "^30.2.0"
+    "@babel/preset-env": "^7.28.3"
   }
 }
