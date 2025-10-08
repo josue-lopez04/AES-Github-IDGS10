@@ -1,37 +1,32 @@
 name: Node.js CI
 
-
-
 on:
- push:
-   branches: [ "master" ]
- pull_request:
-   branches: [ "master" ]
-
-
+  push:
+    branches:
+      - "**"           # cualquier rama (master, main, test, etc.)
+  pull_request:
+    branches:
+      - "**"
+  workflow_dispatch:    # permite correrlo manualmente desde Actions
 
 jobs:
- test:
-   runs-on: ubuntu-latest
-   strategy:
-         matrix:
-           node-version: [22.20.0,18.x]
-   steps:
-     - name: Checkout repository
-       uses: actions/checkout@v4
-     - name: Use Node.js ${{ matrix.node-version }}
-       uses: actions/setup-node@v4
-       with:
-         node-version: ${{ matrix.node-version }}
-         cache: 'npm'
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.20.0, 18.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
+      - name: Install dependencies
+        run: npm install
 
-     - name: Install dependencies
-       run: npm install
-
-
-
-     - name: Run Jest tests
-       run: npm test
-
+      - name: Run Jest tests
+        run: npm test
