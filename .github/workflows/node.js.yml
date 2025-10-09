@@ -11,8 +11,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [22.20.0, 18.x]
+        node-version: [22.x, 18.x]
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,11 +28,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint (stylish to file)
+
+      - name: Lint (generate reports)
         run: |
           mkdir -p reports
-          npx eslint . -f stylish -o reports/eslint-ci.txt
-          npx eslint . -f json -o reports/eslint-ci.json
+          npx eslint . -f stylish -o reports/eslint-ci.txt || true
+          npx eslint . -f json     -o reports/eslint-ci.json || true
+
 
       - name: Upload ESLint report
         uses: actions/upload-artifact@v4
@@ -40,5 +44,11 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+
+      - name: Fail if ESLint errors > 0
+        run: |
+          node -e "const fs=require('fs');const a=JSON.parse(fs.readFileSync('reports/eslint-ci.json','utf8'));const e=a.reduce((s,f)=>s+f.errorCount,0);if(e>0){console.error(`${e} ESLint error(s)`);process.exit(1);} else {console.log('ESLint OK');}"
+
+      # 4) Ejecuta tests de Jestss
       - name: Run Jest tests
         run: npm test
