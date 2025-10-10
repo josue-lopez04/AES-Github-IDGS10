@@ -3,10 +3,7 @@ import globals from "globals";
 
 export default [
   { ignores: ["eslint.config.mjs", "node_modules/**", "dist/**", "coverage/**"] },
-
   js.configs.recommended,
-
-  // Default: CommonJS (tu proyecto usa require/module.exports)
   {
     files: ["**/*.{js,cjs}"],
     languageOptions: {
@@ -19,11 +16,9 @@ export default [
       "linebreak-style": ["error", "unix"],
       quotes: ["error", "single"],
       semi: ["error", "always"],
-      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }] // permite _next
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }] 
     },
   },
-
-  // Soporte ESM cuando sea necesario
   {
     files: ["**/*.mjs", "config/**/*.js", "lib/**/*.js"],
     languageOptions: {
@@ -32,7 +27,6 @@ export default [
       globals: { ...globals.node },
     },
   },
-
   // Tests (Jest)
   {
     files: ["**/*.test.js"],

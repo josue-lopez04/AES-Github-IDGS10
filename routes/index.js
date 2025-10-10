@@ -5,16 +5,16 @@ const bcrypt = require('bcrypt');
 
 router.use(express.json());
 
-// Clave y IV de ejemplo (se regeneran al reiniciar el servidor)
-const key = crypto.randomBytes(32); // 256 bits
-const iv = crypto.randomBytes(16);  // 128 bits
 
-/* GET home page */
+const key = crypto.randomBytes(32); 
+const iv = crypto.randomBytes(16);  
+
+
 router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
-/* AES-256-CBC: encrypt */
+
 router.post('/encrypt', (req, res) => {
   const data = req.body;
   const algorithm = 'aes-256-cbc';
@@ -27,7 +27,7 @@ router.post('/encrypt', (req, res) => {
   res.json({ 'mensaje-cifrado': encryptedData });
 });
 
-/* AES-256-CBC: decrypt (espera hex en req.body.mensaje) */
+
 router.post('/decrypt', (req, res) => {
   const { mensaje } = req.body; // hex
   const algorithm = 'aes-256-cbc';
